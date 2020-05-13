@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 bad_ping=$(/usr/bin/ping -c 3 omv-nas.lan 2>&1| grep --count "100% packet loss\|failure")
@@ -16,7 +17,10 @@ else
    mount=$(mount.cifs //omv-nas.lan/Media /mnt/media -o credentials=/root/.smbcred,uid=5001,gid=5001 0 0 2>&1| grep --count "Device or resource busy")
    echo $mount
    if [ $mount = 0 ]; then
-        echo "Mount suceeded. Starting transmission"
+        echo "Mount suceeded. Stopping Transmission"
+        docker=$(docker stop transmission)
+        echo $docker
+        echo "Starting transmission"
         docker=$(docker start transmission)
         echo $docker
    else
